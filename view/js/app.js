@@ -153,7 +153,9 @@ app.directive('backtolist', function (){
     restrict: 'A',
     link: function (scope, element, attrs){
       element.bind('click', function (){
-        document.querySelector('.movie-detail img').setAttribute('ng-src', '');
+        setTimeout(function (){
+          document.querySelector('.movie-detail img').setAttribute('src', '');
+        },500);
         scope.hasLoadReview = false;
         window.location.hash = '/';
       })
