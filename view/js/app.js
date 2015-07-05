@@ -137,6 +137,8 @@ app.directive('movieitem', ['$location', function($location){
         scope.$parent.hasLoad = true; //不明白为什么controller的scope是directive的parent，按文档说法应该是同一个作用域   可能是ng-repeat创建了新的作用域
         scope.$parent.scrollTop = document.body.scrollTop;  //保存scrollTop值，用于返回时定位
         element.addClass('item-active');
+        var coverImage = document.querySelector('.movie-detail img');
+        coverImage.setAttribute('src', coverImage.getAttribute('ng-src'));
         setTimeout(function(){
           element.removeClass('item-active');
           document.body.scrollTop = 0;
@@ -153,10 +155,10 @@ app.directive('backtolist', function (){
     restrict: 'A',
     link: function (scope, element, attrs){
       element.bind('click', function (){
+        scope.hasLoadReview = false;
         setTimeout(function (){
           document.querySelector('.movie-detail img').setAttribute('src', '');
-        },500);
-        scope.hasLoadReview = false;
+        }, 500);
         window.location.hash = '/';
       })
     }
