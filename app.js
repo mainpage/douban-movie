@@ -4,8 +4,9 @@ var handler = require('./handler');
 var app = express();
 app.use(express.static(__dirname + '/view'));	// 设置静态目录路径
 // 启动服务
-app.listen(4000, function(){
-	console.log('server start on port 4000');
+var port = process.env.PORT || 4000;
+app.listen(port, function(){
+	console.log('server start on port ' + port);
 });
 
 app.get('/', function (req, res){
