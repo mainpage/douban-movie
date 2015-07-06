@@ -154,6 +154,10 @@ app.directive('backtolist', function (){
     link: function (scope, element, attrs){
       element.bind('click', function (){
         scope.hasLoadReview = false;
+        scope.movie.images.large = '';
+        setTimeout(function (){
+          document.querySelector('.movie-detail .cover img').setAttribute('src', '');
+        },500);
         window.location.hash = '/';
       })
     }
