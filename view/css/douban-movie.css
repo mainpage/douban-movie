@@ -16,8 +16,15 @@ a{ text-decoration: none; color: #000;}
 .wrapper{ position: absolute; top: 46px; left: 0px; width: 100%; height: 600px; background-color:#eeeff2;  z-index: 10;}
 
 /*列表页开始*/
-.movie-list{ padding-top: 46px;}
-.movie-list .header{ position: fixed; top: 0px; left: 0px; width: 100%;}
+.movie-list{ position: relative; padding-top: 46px;}
+.movie-list .header{ position: fixed; top: 0px; left: 0px; width: 100%; z-index: 100;}
+.movie-list .header .top-nav{ position: absolute; top: 0px; left: 0px; width: 50px; height: 100%; background: url(../img/top-nav.png) center no-repeat; background-size: 25px;}
+.movie-list .sidebar{ position: fixed; top: 46px; left: -240px; width: 200px; height: 600px;  padding-top: 10px; border-right: 1px solid #DCDBDB; background-color: #fff; transition: left 0.2s; z-index: 100;}
+.movie-list .sidebar li{ padding: 10px 10px 10px 25px; border-bottom: 1px solid #D8D8D8; font-size: 15px;}
+.movie-list .sidebar li.active{ background-color: #ff6e66; color: #fff;}
+.movie-list .sidebar .user-info { height: 60px;}
+.movie-list .sidebar .user-info img{ float: left; height: 60px; margin-right: 15px;}
+.movie-list .sidebar .user-info .name{ height: 60px; line-height: 60px;}
 .movie-list .content .item{ display: block; background-color: #fff; padding: 8px 14px; margin:5px 0px 0px 0px; overflow: hidden;}
 .movie-list .content .item-active{ background: #E2E2E2;}
 .movie-list .content .item .title{ display: -webkit-box;text-overflow: ellipsis; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;}
@@ -27,6 +34,7 @@ a{ text-decoration: none; color: #000;}
 /*.movie-list .content .item:after{ content:''; display: block; clear: both;}*/
 .movie-list .content .item .description{ color: #908E8E;}
 .movie-list .content .item .rating{ height: 20px; line-height: 20px;}
+.movie-list .wrapper{ height: 100%; background-color: rgba(138, 134, 134, 0.3);}
 /*rating star*/
 .midstar{ display: inline-block; width: 55px; height: 11px; background: url(../img/midstars.gif) center no-repeat;}
 .midstar45{ background-position: 0 -11px;}
@@ -52,7 +60,7 @@ a{ text-decoration: none; color: #000;}
 .movie-detail .content .info .rating{ height: 25px; line-height: 25px; font-size: 15px;}
 .movie-detail .content .summary{ text-align: justify;}
 .movie-detail .content .reviews .review-item{ display: block; text-align: left;}
-.movie-detail .content .reviews .review-item-active{ display: block; text-align: left;}
+.movie-detail .content .reviews .review-item-active{ display: block; text-align: left; background: #E2E2E2;}
 .movie-detail .content .reviews .review-item .description{ margin: 5px 0px; text-align: justify;}
 .movie-detail .footer{ padding: 10px; line-height: 25px; border-top: 5px solid #eeeff2; color: #aaa; background-color: #fff; text-align: center;}
 /*rating star*/

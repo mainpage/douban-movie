@@ -10,7 +10,25 @@
 <body ng-app="douban-movie" ng-controller="rootController">
 	<div class="movie-list" ng-controller="movieListCtrl" movielist>
 		<div class="header">
+			<span class="top-nav" topnav></span>
 			<h2 class="title">豆瓣电影</h2>
+		</div>
+		<div class="sidebar">
+			<ul>
+				<li>
+					<div class="user-info">
+						<img src="../img/me.jpg">
+						<h3 class="name">沙朝恒</h3>
+					</div>
+				</li>
+				<li class="active">最新电影</li>
+				<li>top100</li>
+				<li>我来占个位子</li>
+				<li>我来占个位子</li>
+				<li>我来占个位子</li>
+				<li>我来占个位子</li>
+				<li>我来占个位子</li>
+			</ul>
 		</div>
 		<ul class="content">
 			<li class="item" href="#/movie/{{movie.id}}" ng-repeat="movie in movies" movieitem>
@@ -30,6 +48,7 @@
 				</div>
 			</li>
 		</ul>
+		<div class="wrapper" ng-show="showSidebar"></div>
 	</div>
 	
 	<div class="movie-detail" ng-controller="movieDetailCtrl" moviedetail>

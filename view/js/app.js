@@ -32,6 +32,7 @@ app.controller('rootController', ['$scope', function($scope){
 app.controller('movieListCtrl', ['$scope', '$http','$timeout', function($scope, $http, $timeout){   // 注入$Http服务
   $scope.hasLoad = false;
   $scope.show = true;
+  $scope.showSidebar = false;
   $scope.$on('changePage', function (event, data){
     if(data == 'movieList'){
       $scope.show = true;
@@ -96,6 +97,7 @@ app.controller('reviewDetailCtrl', ['$scope', '$http', '$location', function($sc
   $scope.review.movieTitle = '豆瓣电影';
   $scope.$on('changePage', function (event, data){
     if(data == 'reviewDetail'){
+      $scope.review.movieTitle = '豆瓣电影';
       $scope.show = true;
       $scope.$parent.showLoading = true;
       $http.get($location.$$path).success(function (data){
@@ -148,6 +150,55 @@ app.directive('movieitem', ['$location', function($location){
   };
 }]);
 
+app.directive('topnav', function (){
+  return{
+    restrict: 'A',
+    link: function (scope, element, attrs){
+      element.bind('click', function (){
+        console.log(scope.showSidebar);
+        scope.showSidebar = !scope.showSidebar;
+        scope.$digest();//立即检测数据变化并更新dom
+        var sidebar = document.querySelector('.movie-list .sidebar');
+        if(scope.showSidebar == true){
+          sidebar.style.left = '0px';
+        }else{
+          sidebar.style.left = '-240px';
+        }
+      })
+    }
+  }
+})
+
+app.directive('moviedetail', function (){
+  return{
+    restrict: 'A',
+    link: function (scope, element, attrs){
+      scope.$watch('show', function (){ 
+        console.log(scope.show);
+        if(scope.show == 'left-show'){
+          element.css('display', 'block'); 
+          setTimeout(function (){
+            element.css('left', '0px');
+          })
+          document.body.scrollTop = scope.scrollTop;
+        }else if(scope.show == 'stay-show'){
+          element.css('display', 'block');
+          document.body.scrollTop = scope.scrollTop;
+        }else if(scope.show == 'stay-hide'){
+          setTimeout(function (){
+            element.css('display', 'none');
+          }, 500);
+        }else if(scope.show == 'right-hide'){
+          element.css('left', '100%');
+          setTimeout(function (){
+            element.css('display', 'none');
+          }, 500);
+        }
+      })
+    }
+  }
+});
+
 app.directive('backtolist', function (){
   return{
     restrict: 'A',
@@ -178,36 +229,6 @@ app.directive('scrolltoload', function (){
               scope.loadReviews();
             }
           }
-        }
-      })
-    }
-  }
-});
-
-app.directive('moviedetail', function (){
-  return{
-    restrict: 'A',
-    link: function (scope, element, attrs){
-      scope.$watch('show', function (){ 
-        console.log(scope.show);
-        if(scope.show == 'left-show'){
-          element.css('display', 'block'); 
-          setTimeout(function (){
-            element.css('left', '0px');
-          })
-          document.body.scrollTop = scope.scrollTop;
-        }else if(scope.show == 'stay-show'){
-          element.css('display', 'block');
-          document.body.scrollTop = scope.scrollTop;
-        }else if(scope.show == 'stay-hide'){
-          setTimeout(function (){
-            element.css('display', 'none');
-          }, 500);
-        }else if(scope.show == 'right-hide'){
-          element.css('left', '100%');
-          setTimeout(function (){
-            element.css('display', 'none');
-          }, 500);
         }
       })
     }

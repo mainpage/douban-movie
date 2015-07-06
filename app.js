@@ -39,5 +39,5 @@ app.get('/review/:id', function (req, res){
 });
 // 其他任何未定义的路由情况都默认输出 index.html 页面
 app.get('*', function (req, res){
-  console.log('file not found');
+  console.log('file not found, params are: ' + req.params);
 });
