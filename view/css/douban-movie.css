@@ -65,8 +65,8 @@ a{ text-decoration: none; color: #000;}
 .movie-detail .content .menu .load-review{ position: absolute; top: 0px; right: 0px; padding: 3px 5px; border-radius: 3px; color: #fff; background-color: #ff6d64; font-size: 13px;}
 .movie-detail .content .description{ color: #908E8E; font-size: 15px;}
 .movie-detail .content .info, .movie-detail .summary, .movie-detail .reviews .review-item{ margin: 0px 10px 10px 5px; padding: 10px; text-align: center; background-color: #fff;}
-.movie-detail .content .info .cover{ display:inline-block; margin: 5px; padding: 5px; background-color: #F37770; vertical-align: middle;}
-.movie-detail .content .info img{ width: 160px; vertical-align: middle;}
+.movie-detail .content .info .cover{ display:inline-block; height: 220px; margin: 5px; padding: 5px; background-color: #F37770; vertical-align: middle;}
+.movie-detail .content .info img{ height: 220px; vertical-align: middle;}
 .movie-detail .content .info .rating{ height: 25px; line-height: 25px; font-size: 15px;}
 .movie-detail .content .summary{ text-align: justify;}
 .movie-detail .content .reviews .review-item{ display: block; text-align: left;}
