@@ -3,15 +3,17 @@ var http = require('http'),
 	  mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-mongoose.connect('mongodb://localhost/doubanMovie', function(){
+//mongoose.connect('mongodb://localhost/doubanMovie', function (){
+mongoose.connect('mongodb://sch:1123917lj@ds045252.mongolab.com:45252/doubanmovie', function (){
 	//console.log(mongoose.connection.collections);
 	mongoose.connection.collections['movies'].drop(function (err){
 		if(err){
 			console.log('Fail to drop collection')
 		}else{
 			console.log('Drop collection movies success');
+			saveTop100ToDb();
 		}
-	});
+	})
 }); //数据库不存在的话会自动创建
 
 
@@ -21,7 +23,7 @@ var movieSchema = new Schema({
   title: String,
   directors: Array,
   casts: Array,
-  rating: Array,
+  rating: String,
   year: Number,
   images: Object,
   genres: Array
@@ -49,20 +51,36 @@ function download (url, callback){
 	})
 }
 
-(function getMovies(){
-	var url = 'http://api.douban.com/v2/movie/top250?count=250'; //只能获取100条数据，原因未知
+function saveTop100ToDb (){
+	var url = 'http://api.douban.com/v2/movie/top250?count=100'; //只能获取100条数据，原因未知
   download(url, function(data){
   	var movies = JSON.parse(data).subjects;
     for(i in movies){
-    	var tempMovie = new MovieModel(movies[i]);
-    	tempMovie.save(function (err, doc){
-    		//
+    	var tempMovie = movies[i];
+    	var casts = [];
+    	for(var i=0;i<tempMovie.casts.length;i++){
+    		casts.push(tempMovie.casts[i].name);
+    	}
+    	tempMovie.casts = casts;
+    	var directors = [];
+    	for(var i=0;i<tempMovie.directors.length;i++){
+    		directors.push(tempMovie.directors[i].name);
+    	}
+    	tempMovie.directors = directors;
+    	tempMovie.rating = tempMovie.rating.average;
+    	var movieModel = new MovieModel(tempMovie);
+    	movieModel.save(function (){
+				//
     	});
     }
-    console.log(movies.length);
-		console.log('insert success');
 	})
-})();
+};
+
+exports.getTop100FromDb = function (start, count, callback){
+	MovieModel.find({}).skip(start).limit(count).exec(function (err, docs) {
+    callback(docs);
+  });
+}
 
 
 

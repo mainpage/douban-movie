@@ -1,10 +1,11 @@
 var http = require('http');
-var cheerio =require('cheerio');
+var cheerio = require('cheerio');
+var db = require('./db');
 
 function download(url, callback){
-	http.get(url, function(res){
+	http.get(url, function (res){
 		var data = '';
-		res.on('data', function(chunk){
+		res.on('data', function (chunk){
 			data += chunk; 
 		})
 		res.on('end', function(){
@@ -25,18 +26,18 @@ exports.getMovieList = function(callback){
   download(url, function(data){
 		var $ = cheerio.load(data);
 		var movies = [];
-		$('.ui-slide-item').each(function(i, e){
+		$('.ui-slide-item').each(function (i, e){
 			if($(e).attr('data-trailer')){
 				var movie = {};
 	      movie.id = $(e).attr('data-trailer').match(/.*\/subject\/(\d+)\/trailer$/)[1];
 	      movie.title = $(e).attr('data-title');
 	      movie.img = $(e).find('a img').attr('src');
-		    movie.director = $(e).attr('data-director');
-				movie.actors = $(e).attr('data-actors');
-				movie.time = $(e).attr('data-release');
+		    movie.directors = $(e).attr('data-director');
+				movie.casts = $(e).attr('data-actors');
+				movie.year = $(e).attr('data-release');
 				movie.region = $(e).attr('data-region');
 				movie.star = $(e).attr('data-star');
-		    movie.rate = $(e).attr('data-rate');
+		    movie.rating = $(e).attr('data-rate');
 				movies.push(movie);
 			}
     });
@@ -46,7 +47,7 @@ exports.getMovieList = function(callback){
 
 exports.getMovieDetail = function(movieId, callback){
 	var url = 'http://api.douban.com/v2/movie/subject/' + movieId;
-	download(url, function(data){
+	download(url, function (data){
 		callback(data);
 	})
 }
@@ -54,10 +55,10 @@ exports.getMovieDetail = function(movieId, callback){
 exports.getReviewList = function(movieId, callback){
 	var url = 'http://movie.douban.com/subject/' + movieId + '/reviews';
 	console.log(url);
-  download(url, function(data){
+  download(url, function (data){
 		var $ = cheerio.load(data);
 		var reviews = [];
-		$('.review').each(function(i, e){
+		$('.review').each(function (i, e){
 				var review = {};
 				review.id = $(e).find('.review-hd-expand>a').attr('href').match(/.*\/(\d+)\/$/)[1];
 	      review.title = $(e).find('h3 a').last().attr('title');
@@ -73,7 +74,7 @@ exports.getReviewList = function(movieId, callback){
 exports.getReviewDetail = function(reviewId, callback){
 	var url = 'http://movie.douban.com/review/' + reviewId + '/'; //此处必须加'/',否则获取不到影评,浏览器提示重定向,原因不知
 	console.log(url);
-  download(url, function(data){
+  download(url, function (data){
 		var $ = cheerio.load(data);
 		var review = {};
 		//console.log($('span[property="v:summary"]').html());
@@ -86,3 +87,7 @@ exports.getReviewDetail = function(reviewId, callback){
 		callback(review);
 	})
 };
+
+exports.getTop100 = function(start, count, callback){
+	db.getTop100FromDb(start, count, callback);
+}

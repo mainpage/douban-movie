@@ -18,6 +18,12 @@ app.get('/movies', function (req, res){
 		res.send(data);
 	})
 });
+app.get('/top100/:start', function (req, res){
+	var start = req.params.start;
+	handler.getTop100(start, 10, function(data){
+		res.send(data);
+	})
+});
 app.get('/movie/:id', function (req, res){
 	var movieId = req.params.id;
 	console.log(movieId);
