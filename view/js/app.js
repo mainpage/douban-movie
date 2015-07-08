@@ -40,11 +40,11 @@ app.controller('movieListCtrl', ['$scope', '$http','$location', function($scope,
     if(data == 'movieList' || data == 'top100'){
       $scope.show = true;
       $scope.pageInfo = {};
+      $scope.pageInfo[data] = 'active'
       if($scope.hasLoad == false){
         $scope.movies = {};
         $scope.$parent.showLoading = true;
         if(data == 'movieList'){
-          $scope.pageInfo.movieList = 'active';
           $http.get('/movies').success(function (data){
             if(data.length == 0){
               console.log('no data');
@@ -56,7 +56,6 @@ app.controller('movieListCtrl', ['$scope', '$http','$location', function($scope,
             }
           });
         }else{
-          $scope.pageInfo.top100 = 'active';
           $scope.start = 0;
           $http.get('/top100/'+ $scope.start).success(function (data){
             if(data.length == 0){
@@ -78,7 +77,7 @@ app.controller('movieListCtrl', ['$scope', '$http','$location', function($scope,
   })
 }]);
 // 电影详情页控制器
-app.controller('movieDetailCtrl', ['$scope', '$http', '$location', function($scope, $http, $location){
+app.controller('movieDetailCtrl', ['$scope', '$http', '$location', '$q', function($scope, $http, $location, $q){
   $scope.movie = {};
   $scope.movie.title = '豆瓣电影';
   $scope.hasLoad = false;
@@ -105,10 +104,19 @@ app.controller('movieDetailCtrl', ['$scope', '$http', '$location', function($sco
         $scope.scrollTop = 0;
         $scope.$parent.showLoading = true; 
         $scope.hasLoadReview = false;
-        $http.get($location.$$path).success(function (data){
+        $scope.canceler = $q.defer();
+        $http.get($location.$$path, {timeout: $scope.canceler.promise}).success(function (data){
+          $scope.movie = data; 
+          $scope.$parent.showLoading = false;
+        });
+        $scope.cancel = function() {
+          $scope.canceler.resolve("user cancelled");
+          $scope.$parent.showLoading = false;
+        };
+        /*$http.get($location.$$path).success(function (data){
           $scope.movie = data; 
           $scope.$parent.showLoading = false; 
-        });
+        });*/
       }else{
         $scope.show = 'stay-show';
         $scope.hasLoad = false;
@@ -210,6 +218,7 @@ app.directive('sidemenu', function (){
     link: function (scope, element, attrs){
       element.bind('click', function (){
         scope.showSidebar = false;
+        scope.hasLoad = false;
         scope.$digest();//立即检测数据变化并更新dom
         document.querySelector('.sidebar li.active').setAttribute('class','');
         element.addClass('active');
@@ -256,6 +265,7 @@ app.directive('backtolist', function (){
     restrict: 'A',
     link: function (scope, element, attrs){
       element.bind('click', function (){
+        scope.cancel();
         scope.hasLoadReview = false;
         //scope.movie.images.large = '';
         setTimeout(function (){

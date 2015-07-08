@@ -6,14 +6,14 @@ var http = require('http'),
 //mongoose.connect('mongodb://localhost/doubanMovie', function (){
 mongoose.connect('mongodb://sch:1123917lj@ds045252.mongolab.com:45252/doubanmovie', function (){
 	//console.log(mongoose.connection.collections);
-	mongoose.connection.collections['movies'].drop(function (err){
+	/*mongoose.connection.collections['movies'].drop(function (err){
 		if(err){
 			console.log('Fail to drop collection')
 		}else{
 			console.log('Drop collection movies success');
 			saveTop100ToDb();
 		}
-	})
+	})*/
 }); //数据库不存在的话会自动创建
 
 
@@ -24,6 +24,7 @@ var movieSchema = new Schema({
   directors: Array,
   casts: Array,
   rating: String,
+  star: Number,
   year: Number,
   images: Object,
   genres: Array
@@ -67,6 +68,7 @@ function saveTop100ToDb (){
     		directors.push(tempMovie.directors[i].name);
     	}
     	tempMovie.directors = directors;
+    	tempMovie.star = tempMovie.rating.stars;
     	tempMovie.rating = tempMovie.rating.average;
     	var movieModel = new MovieModel(tempMovie);
     	movieModel.save(function (){
