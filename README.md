@@ -17,4 +17,4 @@ A single page webapp based on Mongodb + Express + Angularjs + Nodejs
 > based on Angularjs framwork
 
 ### Deployed in Heroku.com
-> site address: http://doubanmovie.herokuapp.com
+> site address: https://doubanmovie.herokuapp.com

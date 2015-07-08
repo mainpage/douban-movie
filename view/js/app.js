@@ -74,6 +74,7 @@ app.controller('movieListCtrl', ['$scope', '$http','$location', function($scope,
           });
         }
       }else{
+        console.log('showLoading='+$scope.$parent.showLoading);
         $scope.hasLoad = false;
       }
     }else{
