@@ -27,6 +27,7 @@ app.run(['$rootScope', 'myRouter', function ($rootScope, myRouter){
 
 app.controller('rootController', ['$scope', function($scope){
   $scope.showLoading = true;
+  $scope.showWrapper = true;
 }]);
 
 /* 每个路由对应的控制器 */
@@ -40,10 +41,11 @@ app.controller('movieListCtrl', ['$scope', '$http','$location', function($scope,
     if(data == 'movieList' || data == 'top100'){
       $scope.show = true;
       $scope.pageInfo = {};
-      $scope.pageInfo[data] = 'active'
+      $scope.pageInfo[data] = 'active';
       if($scope.hasLoad == false){
         $scope.movies = {};
         $scope.$parent.showLoading = true;
+        $scope.$parent.showWrapper = true;
         if(data == 'movieList'){
           $http.get('/movies').success(function (data){
             if(data.length == 0){
@@ -53,10 +55,12 @@ app.controller('movieListCtrl', ['$scope', '$http','$location', function($scope,
               console.log($scope.movies);
               //$scope.$emit('loadComplete');
               $scope.$parent.showLoading = false;
+              $scope.$parent.showWrapper = false;
             }
           });
         }else{
           $scope.start = 0;
+          console.log('showLoading='+$scope.$parent.showLoading);
           $http.get('/top100/'+ $scope.start).success(function (data){
             if(data.length == 0){
               console.log('no data');
@@ -65,6 +69,7 @@ app.controller('movieListCtrl', ['$scope', '$http','$location', function($scope,
               $scope.movies = data; // 将获得的数据保存到NG的数据模型
               //$scope.$emit('loadComplete');
               $scope.$parent.showLoading = false;
+              $scope.$parent.showWrapper = false;
             }
           });
         }
@@ -82,19 +87,19 @@ app.controller('movieDetailCtrl', ['$scope', '$http', '$location', '$q', functio
   $scope.movie.title = '豆瓣电影';
   $scope.hasLoad = false;
   $scope.loadReviews = function (){ //加载影评
-    $scope.isLoadingReview = true;
+    $scope.$parent.showLoading = true;
     $http.get($location.$$path + '/reviews').success(function (data){
       if(data.length == 0){
         console.log('no reviews');
       }else{
         $scope.reviews = data;
-        $scope.isLoadingReview = false;
+        $scope.$parent.showLoading = false;
         $scope.hasLoadReview = true;
       }
     })
   }   
   $scope.$on('changePage', function (event, data){
-    $scope.isLoadingReview = false;
+    //$scope.$parent.showLoading = false;
     if(data == 'movieDetail'){
       if($scope.hasLoad == false){
         $scope.movie = {};
@@ -102,16 +107,19 @@ app.controller('movieDetailCtrl', ['$scope', '$http', '$location', '$q', functio
         $scope.show = 'left-show';
         $scope.movie.title = '豆瓣电影';
         $scope.scrollTop = 0;
-        $scope.$parent.showLoading = true; 
+        $scope.$parent.showLoading = true;
+        $scope.$parent.showWrapper = true; 
         $scope.hasLoadReview = false;
         $scope.canceler = $q.defer();
         $http.get($location.$$path, {timeout: $scope.canceler.promise}).success(function (data){
           $scope.movie = data; 
           $scope.$parent.showLoading = false;
+          $scope.$parent.showWrapper = false;
         });
         $scope.cancel = function() {
           $scope.canceler.resolve("user cancelled");
           $scope.$parent.showLoading = false;
+          $scope.$parent.showWrapper = false;
         };
         /*$http.get($location.$$path).success(function (data){
           $scope.movie = data; 
@@ -132,7 +140,6 @@ app.controller('movieDetailCtrl', ['$scope', '$http', '$location', '$q', functio
 }]);
 // 影评详情页控制器
 app.controller('reviewDetailCtrl', ['$scope', '$http', '$location', function($scope, $http, $location){
-  $scope.$parent.showLoading = false;
   $scope.review = {};
   $scope.review.movieTitle = '豆瓣电影';
   $scope.$on('changePage', function (event, data){
@@ -140,10 +147,12 @@ app.controller('reviewDetailCtrl', ['$scope', '$http', '$location', function($sc
       $scope.review.movieTitle = '豆瓣电影';
       $scope.show = true;
       $scope.$parent.showLoading = true;
+      $scope.$parent.showWrapper = true;
       $http.get($location.$$path).success(function (data){
         $scope.review = data; 
         $scope.movieId = data.movieId;   
         $scope.$parent.showLoading = false;
+        $scope.$parent.showWrapper = false;
       });
     }else{
       $scope.show = false;
