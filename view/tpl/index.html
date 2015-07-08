@@ -43,7 +43,8 @@
 				<h3 class="title">{{movie.title}}</h3>
 				<p class="description">导演: {{movie.directors.join('/') || movie.directors}}</p>
 				<p class="description">主演: {{movie.casts.join('/') || movie.casts}}</p>
-				<p class="description">上映: {{movie.year}}</p>
+				<p class="description" ng-if="movie.year">上映: {{movie.year}}</p>
+				<p class="description" ng-if="!movie.year">上映: 即将上映</p>
 				<div class="rating" ng-if="movie.rating">
 					<span class="midstar midstar{{movie.star || movie.rating.stars}}"></span>
 					<span class="rate">{{movie.rating}}</span>
@@ -136,8 +137,6 @@
   <div class="loading-circle" ng-show="showLoading"></div>
   <div class="wrapper" ng-show="showWrapper"></div>
 
-	<script src="../framework/angular.min.js" type="text/javascript"></script>
-	<script src="../framework/angular-sanitize.min.js" type="text/javascript"></script>
-  <script src="../js/app.js"></script>
+  <script src="../build/release.min.js"></script>
 </body>
 </html>

@@ -22,24 +22,22 @@ function download(url, callback){
 }
 
 exports.getMovieList = function(callback){
-	var url = 'http://movie.douban.com/';
+	var url = 'http://movie.douban.com/nowplaying/nanjing/';
   download(url, function(data){
 		var $ = cheerio.load(data);
 		var movies = [];
-		$('.ui-slide-item').each(function (i, e){
-			if($(e).attr('data-trailer')){
-				var movie = {};
-	      movie.id = $(e).attr('data-trailer').match(/.*\/subject\/(\d+)\/trailer$/)[1];
-	      movie.title = $(e).attr('data-title');
-	      movie.img = $(e).find('a img').attr('src');
-		    movie.directors = $(e).attr('data-director');
-				movie.casts = $(e).attr('data-actors');
-				movie.year = $(e).attr('data-release');
-				movie.region = $(e).attr('data-region');
-				movie.star = $(e).attr('data-star');
-		    movie.rating = $(e).attr('data-rate');
-				movies.push(movie);
-			}
+		$('.list-item').each(function (i, e){
+			var movie = {};
+      movie.id = $(e).attr('id');
+      movie.title = $(e).attr('data-title');
+      movie.img = $(e).find('a img').attr('src');
+	    movie.directors = $(e).attr('data-director');
+			movie.casts = $(e).attr('data-actors');
+			movie.year = $(e).attr('data-release');
+			movie.region = $(e).attr('data-region');
+			movie.star = $(e).attr('data-star');
+	    movie.rating = $(e).attr('data-score');
+			movies.push(movie);
     });
     callback(movies);
 	})
