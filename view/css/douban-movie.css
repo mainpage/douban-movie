@@ -36,11 +36,13 @@ a{ text-decoration: none; color: #000;}
 .movie-list .sidebar .user-info { height: 60px;}
 .movie-list .sidebar .user-info img{ float: left; height: 60px; margin-right: 15px;}
 .movie-list .sidebar .user-info .name{ height: 60px; line-height: 60px;}
-.movie-list .content .item{ display: block; background-color: #fff; padding: 8px 14px; margin:5px 0px 0px 0px; overflow: hidden;}
+.movie-list .content .item{ display: block; position: relative; background-color: #fff; padding: 8px 80px 8px 14px; margin:5px 0px 0px 0px; overflow: hidden;}
 .movie-list .content .item-active{ background: #E2E2E2;}
 .movie-list .content .item .title{ display: -webkit-box; text-overflow: ellipsis; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 .movie-list .content .item .cover{ width: 85px; height: 120px; float: left; margin-right: 15px; background-color: #eeeff2;}
 .movie-list .content .item .cover img{ height: 120px;}
+.movie-list .content .item .mark{ position: absolute; top: 50px; right: 15px; padding: 3px 8px; border-radius: 3px; color: #fff; background-color: #C1BAB9; font-size: 13px;}
+.movie-list .content .item .mark.active{ background-color: #ff6d64;}
 /*:after清除浮动*/
 /*.movie-list .content .item:after{ content:''; display: block; clear: both;}*/
 .movie-list .content .item .description{ color: #908E8E;}
