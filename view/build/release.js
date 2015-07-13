@@ -23710,7 +23710,9 @@ app.controller('reviewDetailCtrl', ['$scope', '$http', '$location', function($sc
   $scope.review.movieTitle = '豆瓣电影';
   $scope.$on('changePage', function (event, data){
     if(data == 'reviewDetail'){
+      $scope.review = {};
       $scope.review.movieTitle = '豆瓣电影';
+      console.log($scope.review);
       $scope.show = true;
       $scope.$parent.showLoading = true;
       $scope.$parent.showWrapper = true;
