@@ -6,7 +6,7 @@ function download(url, callback){
 	http.get(url, function (res){
 		var data = '';
 		res.on('data', function (chunk){
-			data += chunk; 
+			data += chunk;
 		})
 		res.on('end', function(){
 			if(data){
@@ -23,7 +23,11 @@ function download(url, callback){
 
 exports.getMovieList = function(callback){
 	var url = 'http://movie.douban.com/nowplaying/nanjing/';
+	var tic = new Date();
   download(url, function(data){
+  	var toc =  new Date();
+		var timeCost = toc.getTime() - tic.getTime();
+		console.log('get movies from douban, costs ' + timeCost + 'ms');
 		var $ = cheerio.load(data);
 		var movies = [];
 		$('.list-item').each(function (i, e){
@@ -52,8 +56,11 @@ exports.getMovieDetail = function(movieId, callback){
 
 exports.getReviewList = function(movieId, callback){
 	var url = 'http://movie.douban.com/subject/' + movieId + '/reviews';
-	console.log(url);
+	var tic = new Date();
   download(url, function (data){
+  	var toc = new Date();
+		var timeCost = toc.getTime() - tic.getTime();
+		console.log('get review detail from douban, costs ' + timeCost + 'ms');
 		var $ = cheerio.load(data);
 		var reviews = [];
 		$('.review').each(function (i, e){
@@ -71,7 +78,7 @@ exports.getReviewList = function(movieId, callback){
 
 exports.getReviewDetail = function(reviewId, callback){
 	var url = 'http://movie.douban.com/review/' + reviewId + '/'; //此处必须加'/',否则获取不到影评,浏览器提示重定向,原因不知
-	console.log(url);
+	var tic = new Date();
   download(url, function (data){
 		var $ = cheerio.load(data);
 		var review = {};

@@ -13,34 +13,52 @@ app.get('/', function (req, res){
 	res.sendfile('view/tpl/index.html');
 });
 app.get('/movies', function (req, res){
-	console.log('get movies');
+	var tic =  new Date();
 	handler.getMovieList(function(data){
 		res.send(data);
+		var toc =  new Date();
+		var timeCost = toc.getTime() - tic.getTime();
+		console.log('get movies, costs ' + timeCost + 'ms');
 	})
 });
 app.get('/top100/:start', function (req, res){
 	var start = req.params.start;
+	var tic =  new Date();
 	handler.getTop100(start, 10, function(data){
 		res.send(data);
+		var toc =  new Date();
+		var timeCost = toc.getTime() - tic.getTime();
+		console.log('get top100, costs ' + timeCost + 'ms');
 	})
 });
 app.get('/movie/:id', function (req, res){
 	var movieId = req.params.id;
-	console.log(movieId);
+	var tic =  new Date();
 	handler.getMovieDetail(movieId, function (data){
 		res.send(data);
+		var toc =  new Date();
+		var timeCost = toc.getTime() - tic.getTime();
+		console.log('get movie ' + movieId + ', costs ' + timeCost + 'ms');
 	})
 });
 app.get('/movie/:id/reviews', function (req, res){
 	var movieId = req.params.id;
+	var tic =  new Date();
 	handler.getReviewList(movieId, function (data){
 		res.send(data);
+		var toc =  new Date();
+		var timeCost = toc.getTime() - tic.getTime();
+		console.log('get reviews, costs ' + timeCost + 'ms');
 	})
 });
 app.get('/review/:id', function (req, res){
 	var reviewId = req.params.id;
+	var tic =  new Date();
 	handler.getReviewDetail(reviewId, function (data){
 		res.send(data);
+		var toc =  new Date();
+		var timeCost = toc.getTime() - tic.getTime();
+		console.log('get review ' + reviewId + ', costs ' + timeCost + 'ms');
 	})
 });
 // 其他任何未定义的路由情况都默认输出 index.html 页面
