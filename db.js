@@ -8,7 +8,7 @@ mongoose.connect('mongodb://sch:1123917lj@ds045252.mongolab.com:45252/doubanmovi
 	//console.log(mongoose.connection.collections);
 	/*mongoose.connection.collections['movies'].drop(function (err){
 		if(err){
-			console.log('Fail to drop collection')
+			console.log('Fail to drop collection');
 		}else{
 			console.log('Drop collection movies success');
 			saveTop100ToDb();
@@ -27,7 +27,8 @@ var movieSchema = new Schema({
   star: Number,
   year: Number,
   images: Object,
-  genres: Array
+  genres: Array,
+  isMarked: {type: Boolean, default: false}
 });
 
 // 建立电影model

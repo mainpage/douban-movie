@@ -86,19 +86,7 @@ app.controller('movieListCtrl', ['$scope', '$http','$location', function($scope,
 app.controller('movieDetailCtrl', ['$scope', '$http', '$location', '$q', function($scope, $http, $location, $q){
   $scope.movie = {};
   $scope.movie.title = '豆瓣电影';
-  $scope.hasLoad = false;
-  $scope.loadReviews = function (){ //加载影评
-    $scope.$parent.showLoading = true;
-    $http.get($location.$$path + '/reviews').success(function (data){
-      if(data.length == 0){
-        console.log('no reviews');
-      }else{
-        $scope.reviews = data;
-        $scope.$parent.showLoading = false;
-        $scope.hasLoadReview = true;
-      }
-    })
-  }   
+  $scope.hasLoad = false;   
   $scope.$on('changePage', function (event, data){
     //$scope.$parent.showLoading = false;
     if(data == 'movieDetail'){
@@ -188,7 +176,8 @@ app.directive('movieitem', ['$location', function($location){
     restrict: 'A',
     link: function (scope, element, attrs){
       element.bind('click', function (){
-        scope.$parent.hasLoad = true; //不明白为什么controller的scope是directive的parent，按文档说法应该是同一个作用域   可能是ng-repeat创建了新的作用域
+        console.log(scope.movie);
+        scope.$parent.hasLoad = true; //不明白为什么controller的scope是directive的parent，按文档说法应该是同一个作用域   应该是ng-repeat创建了新的作用域
         scope.$parent.scrollTop = document.body.scrollTop;  //保存scrollTop值，用于返回时定位
         element.addClass('item-active');
         document.querySelector('.movie-detail .arrow-left').setAttribute('backurl', window.location.hash);
@@ -292,8 +281,7 @@ app.directive('backtolist', function (){
 app.directive('scrolltoload', ['$http', '$location', function ($http, $location){
   return{
     restrict: 'A',
-    link: function (scope, element, attrs){
-      var count = 0;
+    link: function (scope, element, attrs){ 
       var isLoadingMore = false;
       window.addEventListener('scroll', function (){
         if(window.location.hash.indexOf("/top100") > -1){
@@ -302,9 +290,10 @@ app.directive('scrolltoload', ['$http', '$location', function ($http, $location)
             isLoadingMore = true;
             scope.$parent.showLoading = true;
             $http.get($location.$$path + '/' + (scope.start + 10)).success(function (data){
+              scope.$parent.showLoading = false;
+              isLoadingMore = false;
               if(data.length == 0){
                 console.log('no more');
-                scope.$parent.showLoading = false;
               }else{
                 console.log(scope.movies);
                 console.log(scope.savedData);
@@ -312,18 +301,24 @@ app.directive('scrolltoload', ['$http', '$location', function ($http, $location)
                 scope.movies = scope.savedData;
                 console.log(scope.movies);
                 scope.start += 10;
-                isLoadingMore = false;
-                scope.$parent.showLoading = false;
               }
             })
           }
         }else if(window.location.hash.indexOf("/movie") > -1 && scope.hasLoadReview == false){
           console.log(document.querySelector('.movie-detail').offsetHeight+','+window.screen.height+','+document.body.scrollTop);
-          if(document.querySelector('.movie-detail').offsetHeight - window.screen.height - document.body.scrollTop < 10){
-            count++;
-            if(count>1){
-              scope.loadReviews();
-            }
+          if(document.querySelector('.movie-detail').offsetHeight - window.screen.height - document.body.scrollTop < 10 && isLoadingMore == false){
+            isLoadingMore = true;
+            scope.$parent.showLoading = true;
+            $http.get($location.$$path + '/reviews').success(function (data){
+              scope.$parent.showLoading = false;
+              scope.hasLoadReview = true;
+              isLoadingMore = false;
+              if(data.length == 0){
+                console.log('no reviews');
+              }else{
+                scope.reviews = data;
+              }
+            })
           }
         }
       })
