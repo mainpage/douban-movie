@@ -85,5 +85,11 @@ exports.getTop100FromDb = function (start, count, callback){
   });
 }
 
+exports.updateMarkToDb = function (movieId, isMarked, callback){
+  MovieModel.update({id:movieId}, {isMarked:isMarked}, function (){
+    callback('success');
+  })
+}
+
 
 

@@ -61,6 +61,14 @@ app.get('/review/:id', function (req, res){
 		console.log('get review ' + reviewId + ', costs ' + timeCost + 'ms');
 	})
 });
+app.put('/movie/:id/isMarked/:isMarked', function (req, res){
+	console.log('catch put request');
+	var movieId = req.params.id,
+	    isMarked = req.params.isMarked;
+	handler.updateMark(movieId, isMarked, function (data){
+		res.send(data);
+	});
+});
 // 其他任何未定义的路由情况都默认输出 index.html 页面
 app.get('*', function (req, res){
   console.log('file not found, params are: ' + req.params);

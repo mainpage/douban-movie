@@ -23757,6 +23757,24 @@ app.directive('movieitem', ['$location', function($location){
   };
 }]);
 
+app.directive('mark', ['$http', '$location', function ($http){
+  return{
+    restrict: 'A',
+    link: function (scope, element, attrs){ 
+      element.on('click', function (e){
+        e.stopPropagation();
+        scope.movie.isMarked = !scope.movie.isMarked;
+        scope.$digest();
+        if(window.location.hash.indexOf("/top100") > -1){
+          $http.put('movie/' + scope.movie.id + '/isMarked/' + scope.movie.isMarked).success(function (data){
+            //
+          })
+        }
+      })
+    }
+  }
+}]);
+
 app.directive('topnav', function (){
   return{
     restrict: 'A',
@@ -23848,6 +23866,7 @@ app.directive('scrolltoload', ['$http', '$location', function ($http, $location)
     restrict: 'A',
     link: function (scope, element, attrs){ 
       var isLoadingMore = false;
+      var count = 0;
       window.addEventListener('scroll', function (){
         if(window.location.hash.indexOf("/top100") > -1){
           console.log(document.body.offsetHeight+','+window.screen.height+','+document.body.scrollTop);
@@ -23872,18 +23891,21 @@ app.directive('scrolltoload', ['$http', '$location', function ($http, $location)
         }else if(window.location.hash.indexOf("/movie") > -1 && scope.hasLoadReview == false){
           console.log(document.querySelector('.movie-detail').offsetHeight+','+window.screen.height+','+document.body.scrollTop);
           if(document.querySelector('.movie-detail').offsetHeight - window.screen.height - document.body.scrollTop < 10 && isLoadingMore == false){
-            isLoadingMore = true;
-            scope.$parent.showLoading = true;
-            $http.get($location.$$path + '/reviews').success(function (data){
-              scope.$parent.showLoading = false;
-              scope.hasLoadReview = true;
-              isLoadingMore = false;
-              if(data.length == 0){
-                console.log('no reviews');
-              }else{
-                scope.reviews = data;
-              }
-            })
+            count ++;
+            if(count>1){
+              isLoadingMore = true;
+              scope.$parent.showLoading = true;
+              $http.get($location.$$path + '/reviews').success(function (data){
+                scope.$parent.showLoading = false;
+                scope.hasLoadReview = true;
+                isLoadingMore = false;
+                if(data.length == 0){
+                  console.log('no reviews');
+                }else{
+                  scope.reviews = data;
+                }
+              })
+            }
           }
         }
       })

@@ -52,8 +52,8 @@
 				<div class="rating" ng-if="!movie.rating">
 					<span class="rate">暂无评分</span>
 				</div>
-				<span class="mark active" ng-if="movie.isMarked">已看</span>
-				<span class="mark" ng-if="!movie.isMarked">未看</span>
+				<span class="mark active" ng-show="movie.isMarked" mark>已看</span>
+				<span class="mark" ng-hide="movie.isMarked" mark>未看</span>
 			</li>
 		</ul>
 		<div class="wrapper" ng-show="showSidebar"></div>
@@ -100,7 +100,7 @@
 			</div>
 			<div class="menu">
 				<h3 class="title">影评</h3>
-				<span class="load-review"  ng-hide="hasLoadReview" scrolltoload>向下滑动加载影评</span>
+				<span class="load-review" ng-hide="hasLoadReview" scrolltoload>向下滑动加载影评</span>
 			</div>
 			<ul class="reviews" ng-show="hasLoadReview">
 				<li class="review-item" href="#/review/{{review.id}}" ng-repeat="review in reviews" reviewitem>

@@ -96,3 +96,7 @@ exports.getReviewDetail = function(reviewId, callback){
 exports.getTop100 = function(start, count, callback){
 	db.getTop100FromDb(start, count, callback);
 }
+
+exports.updateMark = function(movieId, isMarked, callback){
+	db.updateMarkToDb(movieId, isMarked, callback);
+}
