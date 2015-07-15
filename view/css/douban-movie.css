@@ -26,11 +26,11 @@ a{ text-decoration: none; color: #000;}
 .wrapper{ position: absolute; top: 46px; left: 0px; width: 100%; height: 600px; background-color:#eeeff2;  z-index: 10;}
 
 /*列表页开始*/
-.movie-list{ position: relative; padding-top: 46px; z-index: 2;}
+.movie-list{ padding-top: 46px; z-index: 2;}
 .movie-list .header{ position: fixed; top: 0px; left: 0px; width: 100%; z-index: 2;}
 .movie-list .header .top-nav{ position: absolute; top: 0px; left: 0px; width: 50px; height: 100%; background: url(../img/top-nav.png) center no-repeat; background-size: 25px;}
 .movie-list .header .order-select{ position: absolute; top: 10px; right: 10px; border: 0px;  font-size: 16px; font-family: "Helvetica Neue";}
-.movie-list .sidebar{ position: fixed; top: 46px; left: -240px; width: 200px; height: 600px;  padding-top: 10px; border-right: 1px solid #DCDBDB; background-color: #fff; -webkit-transition: left 0.2s; -moz-transition: left 0.2s; transition: left 0.2s; z-index: 2;}
+.movie-list .sidebar{ position: fixed; top: 46px; left: -240px; width: 200px; height: 600px;  padding-top: 10px; border-right: 1px solid #DCDBDB; background-color: #fff; -webkit-transition: left 0.2s; -moz-transition: left 0.2s; transition: left 0.2s; z-index: 20;}
 .movie-list .sidebar li{ padding: 10px 10px 10px 25px; border-bottom: 1px solid #D8D8D8; font-size: 15px;}
 .movie-list .sidebar li.active{ background-color: #ff6e66; color: #fff;}
 .movie-list .sidebar .user-info { height: 60px;}
@@ -69,8 +69,8 @@ a{ text-decoration: none; color: #000;}
 .movie-detail .content .menu .load-review{ position: absolute; top: 0px; right: 0px; padding: 3px 5px; border-radius: 3px; color: #fff; background-color: #ff6d64; font-size: 13px;}
 .movie-detail .content .description{ color: #908E8E; font-size: 15px;}
 .movie-detail .content .info, .movie-detail .summary, .movie-detail .reviews .review-item{ margin: 0px 10px 10px 5px; padding: 10px; text-align: center; background-color: #fff;}
-.movie-detail .content .info .cover{ display:inline-block; height: 220px; margin: 5px; padding: 5px; background-color: #F37770; vertical-align: middle;}
-.movie-detail .content .info img{ height: 220px; vertical-align: middle;}
+.movie-detail .content .info .cover{ display:inline-block; width: 158px; height: 220px; margin: 5px; padding: 5px; background-color: #F37770; vertical-align: middle;}
+.movie-detail .content .info img{ width: 158px; height: 220px; vertical-align: middle;}
 .movie-detail .content .info .rating{ height: 25px; line-height: 25px; font-size: 15px;}
 .movie-detail .content .summary{ text-align: justify;}
 .movie-detail .content .reviews .review-item{ display: block; text-align: left;}
