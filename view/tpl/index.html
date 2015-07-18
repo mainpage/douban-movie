@@ -8,7 +8,7 @@
  <link rel="stylesheet" type="text/css" href="../css/douban-movie.css">
 </head>
 <body ng-app="douban-movie" ng-controller="rootController">
-	<div class="movie-list" ng-controller="movieListCtrl" movielist scrolltoload>
+	<div class="movie-list" ng-controller="movieListCtrl" movielist loadmore>
 		<div class="header">
 			<span class="top-nav" topnav></span>
 			<h2 class="title">豆瓣电影</h2>
@@ -100,7 +100,7 @@
 			</div>
 			<div class="menu">
 				<h3 class="title">影评</h3>
-				<span class="load-review" ng-hide="hasLoadReview" scrolltoload>向下滑动加载影评</span>
+				<span class="load-review" ng-hide="hasLoadReview" loadreview>向下滑动加载影评</span>
 			</div>
 			<ul class="reviews" ng-show="hasLoadReview">
 				<li class="review-item" href="#/review/{{review.id}}" ng-repeat="review in reviews" reviewitem>

@@ -128,7 +128,7 @@ app.controller('movieDetailCtrl', ['$scope', '$http', '$location', '$q', functio
   })
 }]);
 // 影评详情页控制器
-app.controller('reviewDetailCtrl', ['$scope', '$http', '$location', function($scope, $http, $location){
+app.controller('reviewDetailCtrl', ['$scope', '$http', '$location', '$q', function($scope, $http, $location, $q){
   $scope.review = {};
   $scope.review.movieTitle = '豆瓣电影';
   $scope.$on('changePage', function (event, data){
@@ -139,12 +139,18 @@ app.controller('reviewDetailCtrl', ['$scope', '$http', '$location', function($sc
       $scope.show = true;
       $scope.$parent.showLoading = true;
       $scope.$parent.showWrapper = true;
-      $http.get($location.$$path).success(function (data){
+      $scope.canceler = $q.defer();
+      $http.get($location.$$path, {timeout: $scope.canceler.promise}).success(function (data){
         $scope.review = data; 
         $scope.movieId = data.movieId;   
         $scope.$parent.showLoading = false;
         $scope.$parent.showWrapper = false;
       });
+      $scope.cancel = function() {
+        $scope.canceler.resolve("user cancelled");
+        $scope.$parent.showLoading = false;
+        $scope.$parent.showWrapper = false;
+      };
     }else{
       $scope.show = false;
     }
@@ -170,6 +176,36 @@ app.directive('movielist', function (){
     }
   }
 });
+
+app.directive('loadmore', ['$http', '$location', function ($http, $location){
+  return{
+    restrict: 'A',
+    link: function (scope, element, attrs){ 
+      var isLoadingMore = false;
+      var count = 0;
+      var preScroll = 0;
+      window.addEventListener('scroll', function (){
+        if(document.body.offsetHeight - window.screen.height - document.body.scrollTop <= 200 && isLoadingMore == false && document.body.scrollTop > preScroll){
+          isLoadingMore = true;
+          scope.$parent.showLoading = true;
+          console.log('start='+scope.start);
+          $http.get($location.$$path + '/' + (scope.start + 10)).success(function (data){
+            scope.$parent.showLoading = false;
+            isLoadingMore = false;
+            if(data.length == 0){
+              console.log('no more');
+            }else{
+              scope.savedData = scope.savedData.concat(data);
+              scope.movies = scope.savedData;
+              scope.start += 10;
+            }
+          })
+        }
+        preScroll = document.body.scrollTop;
+      })
+    }
+  }
+}]);
 
 app.directive('movieitem', ['$location', function($location){
   return {
@@ -296,53 +332,32 @@ app.directive('backtolist', function (){
   }
 });
 
-app.directive('scrolltoload', ['$http', '$location', function ($http, $location){
+app.directive('loadreview', ['$http', '$location', function ($http, $location){
   return{
     restrict: 'A',
     link: function (scope, element, attrs){ 
       var isLoadingMore = false;
       var count = 0;
+      var preScroll = 0;
       window.addEventListener('scroll', function (){
-        if(window.location.hash.indexOf("/top100") > -1){
-          console.log(document.body.offsetHeight+','+window.screen.height+','+document.body.scrollTop);
-          if(document.body.offsetHeight - window.screen.height - document.body.scrollTop <= 200 && isLoadingMore == false){
+        if(scope.hasLoadReview == false && document.querySelector('.movie-detail').offsetHeight - window.screen.height - document.body.scrollTop < 10 && isLoadingMore == false && document.body.scrollTop > preScroll){
+          count ++;
+          if(count>1){
             isLoadingMore = true;
             scope.$parent.showLoading = true;
-            $http.get($location.$$path + '/' + (scope.start + 10)).success(function (data){
+            $http.get($location.$$path + '/reviews').success(function (data){
               scope.$parent.showLoading = false;
+              scope.hasLoadReview = true;
               isLoadingMore = false;
               if(data.length == 0){
-                console.log('no more');
+                console.log('no reviews');
               }else{
-                console.log(scope.movies);
-                console.log(scope.savedData);
-                scope.savedData = scope.savedData.concat(data);
-                scope.movies = scope.savedData;
-                console.log(scope.movies);
-                scope.start += 10;
+                scope.reviews = data;
               }
             })
           }
-        }else if(window.location.hash.indexOf("/movie") > -1 && scope.hasLoadReview == false){
-          console.log(document.querySelector('.movie-detail').offsetHeight+','+window.screen.height+','+document.body.scrollTop);
-          if(document.querySelector('.movie-detail').offsetHeight - window.screen.height - document.body.scrollTop < 10 && isLoadingMore == false){
-            count ++;
-            if(count>1){
-              isLoadingMore = true;
-              scope.$parent.showLoading = true;
-              $http.get($location.$$path + '/reviews').success(function (data){
-                scope.$parent.showLoading = false;
-                scope.hasLoadReview = true;
-                isLoadingMore = false;
-                if(data.length == 0){
-                  console.log('no reviews');
-                }else{
-                  scope.reviews = data;
-                }
-              })
-            }
-          }
         }
+        preScroll =  document.body.scrollTop;
       })
     }
   }
@@ -392,6 +407,7 @@ app.directive('backtomovie', function (){
     restrict: 'A',
     link: function (scope, element, attrs){
       element.bind('click', function (){
+        scope.cancel();
         window.location.hash = '/movie/' + scope.movieId;
       })
     }
