@@ -185,7 +185,7 @@ app.directive('loadmore', ['$http', '$location', function ($http, $location){
       var count = 0;
       var preScroll = 0;
       window.addEventListener('scroll', function (){
-        if(document.body.offsetHeight - window.screen.height - document.body.scrollTop <= 200 && isLoadingMore == false && document.body.scrollTop > preScroll){
+        if(window.location.hash.indexOf('/top100') > -1 && document.body.offsetHeight - window.screen.height - document.body.scrollTop <= 200 && isLoadingMore == false && document.body.scrollTop > preScroll){
           isLoadingMore = true;
           scope.$parent.showLoading = true;
           console.log('start='+scope.start);
@@ -340,7 +340,7 @@ app.directive('loadreview', ['$http', '$location', function ($http, $location){
       var count = 0;
       var preScroll = 0;
       window.addEventListener('scroll', function (){
-        if(scope.hasLoadReview == false && document.querySelector('.movie-detail').offsetHeight - window.screen.height - document.body.scrollTop < 10 && isLoadingMore == false && document.body.scrollTop > preScroll){
+        if(window.location.hash.indexOf('/movie') > -1 && scope.hasLoadReview == false && document.querySelector('.movie-detail').offsetHeight - window.screen.height - document.body.scrollTop < 10 && isLoadingMore == false && document.body.scrollTop > preScroll){
           count ++;
           if(count>1){
             isLoadingMore = true;
