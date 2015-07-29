@@ -337,27 +337,21 @@ app.directive('loadreview', ['$http', '$location', function ($http, $location){
     restrict: 'A',
     link: function (scope, element, attrs){ 
       var isLoadingMore = false;
-      var count = 0;
-      var preScroll = 0;
-      window.addEventListener('scroll', function (){
-        if(window.location.hash.indexOf('/movie') > -1 && scope.hasLoadReview == false && document.querySelector('.movie-detail').offsetHeight - window.screen.height - document.body.scrollTop < 10 && isLoadingMore == false && document.body.scrollTop > preScroll){
-          count ++;
-          if(count>1){
-            isLoadingMore = true;
-            scope.$parent.showLoading = true;
-            $http.get($location.$$path + '/reviews').success(function (data){
-              scope.$parent.showLoading = false;
-              scope.hasLoadReview = true;
-              isLoadingMore = false;
-              if(data.length == 0){
-                console.log('no reviews');
-              }else{
-                scope.reviews = data;
-              }
-            })
-          }
+      element.on('click', function (){
+        if(scope.hasLoadReview == false && isLoadingMore == false){
+          isLoadingMore = true;
+          scope.$parent.showLoading = true;
+          $http.get($location.$$path + '/reviews').success(function (data){
+            scope.$parent.showLoading = false;
+            scope.hasLoadReview = true;
+            isLoadingMore = false;
+            if(data.length == 0){
+              console.log('no reviews');
+            }else{
+              scope.reviews = data;
+            }
+          })
         }
-        preScroll =  document.body.scrollTop;
       })
     }
   }
