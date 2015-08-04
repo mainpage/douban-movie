@@ -23579,10 +23579,10 @@ app.service('myRouter', ['$rootScope', '$location', function ($rootScope){  //å¿
           pageInfo = "movieDetail";
         }else if(next.indexOf('/review') > -1){
           pageInfo = "reviewDetail";
-        }else if(next.indexOf('/top100') > -1){
-          pageInfo = "top100";
+        }else if(next.indexOf('/hot') > -1){
+          pageInfo = "hot";
         }else{
-          pageInfo = "movieList";
+          pageInfo = "top100";
         }
         $rootScope.$broadcast('changePage', pageInfo);
       })
@@ -23607,7 +23607,7 @@ app.controller('movieListCtrl', ['$scope', '$http','$location', function($scope,
   $scope.showSidebar = false;
   $scope.savedData = []; 
   $scope.$on('changePage', function (event, data){
-    if(data == 'movieList' || data == 'top100'){
+    if(data == 'hot' || data == 'top100'){
       $scope.show = true;
       $scope.pageInfo = {};
       $scope.pageInfo[data] = 'active';
@@ -23615,7 +23615,8 @@ app.controller('movieListCtrl', ['$scope', '$http','$location', function($scope,
         $scope.movies = {};
         $scope.$parent.showLoading = true;
         $scope.$parent.showWrapper = true;
-        if(data == 'movieList'){
+        if(data == 'hot'){
+          $scope.pageInfo.name = 'hot';
           $http.get('/movies').success(function (data){
             if(data.length == 0){
               console.log('no data');
@@ -23628,6 +23629,7 @@ app.controller('movieListCtrl', ['$scope', '$http','$location', function($scope,
             }
           });
         }else{
+          $scope.pageInfo.name = 'top100';
           $scope.start = 0;
           console.log('showLoading='+$scope.$parent.showLoading);
           $http.get('/top100/'+ $scope.start).success(function (data){

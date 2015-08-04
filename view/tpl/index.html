@@ -11,6 +11,7 @@
 	<div class="movie-list" ng-controller="movieListCtrl" movielist loadmore>
 		<div class="header">
 			<span class="top-nav" topnav></span>
+			<span class="cur-location">{{pageInfo.name}}</span>
 			<h2 class="title">豆瓣电影</h2>
 			<select class="order-select" ng-model="query">
 				<option value="" selected="selected">默认</option>
@@ -26,8 +27,8 @@
 						<h3 class="name">沙朝恒</h3>
 					</div>
 				</li>
-				<li href="/" class="{{pageInfo.movieList}}" sidemenu>最新电影</li>
 				<li href="/top100" class="{{pageInfo.top100}}" sidemenu>top100</li>
+				<li href="/hot" class="{{pageInfo.hot}}" sidemenu>最新电影</li>
 				<li>我来占个位子</li>
 				<li>我来占个位子</li>
 				<li>我来占个位子</li>
