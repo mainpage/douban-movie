@@ -22,13 +22,13 @@ a{ text-decoration: none; color: #000;}
 .header{ position: relative; background-color: #ff6e66;}
 .header .title{ height: 46px; line-height: 46px; color: #fff; text-align: center;}
 .loading-circle{ position: fixed; top: 50%; left: 50%; width: 64px; height: 64px; margin: -32px 0px 0px -32px;background: url(../img/loading.png) no-repeat; background-size: 64px; -webkit-animation: loading-circle 600ms ease-out infinite; -moz-animation: loading-circle 600ms ease-out infinite; animation: loading-circle 600ms ease-out infinite; z-index: 100;} 
-.arrow-left{ position: absolute; left: 0; top: 0; width: 50px; height: 100%; background: url(../img/arrow_left.png) center no-repeat; background-size: 12px;}
+.arrow-left{ position: absolute; left: 0; top: 0; width: 50px; height: 100%; background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAaCAMAAABfE/ZQAAAAkFBMVEUAAADFDgDFDgDFDgD////65+b109HFDgDFDgD////FDgDlkozmk43////lkYr////3393////329n00M311dP00c7////////////////lk43FDgDkj4nkj4jjjIXFDgD////////////dcWn////mlY/FDgD////88/L77ezRPDHOMyf99vXTRjvgfXXcbGPYIKu3AAAAJ3RSTlMA8CfoCv779MrBOSkeFRQP+ff38/Lq1tDHpWhiXlNIMRvay5diMhyazth6AAAAkUlEQVQY033QaQ+CMAyA4Q455i3igeJ9daLo//93rhDWThP37XmXJk2B3yFPL5JHRFM4DheIGCuP0UO3XNbsBA3HxDvzRCwdc49h19KUav+Hleo1hJXls0paQmr9Isr/syOEc5pfcxj9hIzCRoQZ7SfCoA5bEeLvMKWw49CnEMkwofsFfjCaDdfMvJUw3HRSfABHYRRvFljNXgAAAABJRU5ErkJggg==) center no-repeat; background-size: 12px;}
 .wrapper{ position: absolute; top: 46px; left: 0px; width: 100%; height: 600px; background-color:#eeeff2;  z-index: 10;}
 
 /*列表页开始*/
 .movie-list{ padding-top: 46px; z-index: 2;}
 .movie-list .header{ position: fixed; top: 0px; left: 0px; width: 100%; z-index: 2;}
-.movie-list .header .top-nav{ position: absolute; top: 0px; left: 0px; width: 50px; height: 100%; background: url(../img/top-nav.png) center no-repeat; background-size: 25px;}
+.movie-list .header .top-nav{ position: absolute; top: 0px; left: 0px; width: 50px; height: 100%; background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwAgMAAAAqbBEUAAAADFBMVEUAAAD///8AAAD////IZVEZAAAABHRSTlMAAFqzoa8xcgAAAClJREFUKM9jCEUCDFTm1P+Hgr9U52StgoKVSJY6MJLJGXUoDodSPVEAAN65RTMMRcUhAAAAAElFTkSuQmCC) center no-repeat; background-size: 25px;}
 .movie-list .header .order-select{ position: absolute; top: 10px; right: 10px; border: 0px;  font-size: 16px; font-family: "Helvetica Neue";}
 .movie-list .sidebar{ position: fixed; top: 46px; left: -240px; width: 200px; height: 600px;  padding-top: 10px; border-right: 1px solid #DCDBDB; background-color: #fff; -webkit-transition: left 0.2s; -moz-transition: left 0.2s; transition: left 0.2s; z-index: 20;}
 .movie-list .sidebar li{ padding: 10px 10px 10px 25px; border-bottom: 1px solid #D8D8D8; font-size: 15px;}

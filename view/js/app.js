@@ -1,6 +1,10 @@
 // 声明模块
 var app = angular.module('douban-movie', ['ngSanitize']); // 在模块中注入ngRoute（路由）模块
 
+/*app.config(['$httpProvider', function ($httpProvider) {
+  console.log($httpProvider.defaults.headers.common);
+}]);*/
+
 app.service('myRouter', ['$rootScope', '$location', function ($rootScope){  //必须注入$location才能绑定$locationChangeStart事件
   return{
     route: function() {
