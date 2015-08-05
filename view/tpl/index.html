@@ -11,7 +11,7 @@
 	<div class="movie-list" ng-controller="movieListCtrl" movielist loadmore>
 		<div class="header">
 			<span class="top-nav" topnav></span>
-			<span class="cur-location">{{pageInfo.name}}</span>
+			<span class="cur-location" ng-bind="pageInfo.name"></span>
 			<h2 class="title">豆瓣电影</h2>
 			<select class="order-select" ng-model="query">
 				<option value="" selected="selected">默认</option>
