@@ -80,7 +80,11 @@ app.controller('movieListCtrl', ['$scope', '$http','$location', function($scope,
           });
         }
       }else{
-        console.log('showLoading='+$scope.$parent.showLoading);
+        if(data == 'hot'){
+          $scope.pageInfo.name = 'hot';
+        }else{
+          $scope.pageInfo.name = 'top100';
+        }
         $scope.hasLoad = false;
       }
     }else{
@@ -105,12 +109,12 @@ app.controller('movieDetailCtrl', ['$scope', '$http', '$location', '$q', functio
         $scope.$parent.showLoading = true;
         $scope.$parent.showWrapper = true; 
         $scope.hasLoadReview = false;
-        $scope.canceler = $q.defer();
-        $http.get($location.$$path, {timeout: $scope.canceler.promise}).success(function (data){
+        $http.get($location.$$path).success(function (data){
           $scope.movie = data; 
           $scope.$parent.showLoading = false;
           $scope.$parent.showWrapper = false;
         });
+        $scope.canceler = $q.defer();
         $scope.cancel = function() {
           $scope.canceler.resolve("user cancelled");
           $scope.$parent.showLoading = false;
@@ -145,13 +149,13 @@ app.controller('reviewDetailCtrl', ['$scope', '$http', '$location', '$q', functi
       $scope.show = true;
       $scope.$parent.showLoading = true;
       $scope.$parent.showWrapper = true;
-      $scope.canceler = $q.defer();
-      $http.get($location.$$path, {timeout: $scope.canceler.promise}).success(function (data){
+      $http.get($location.$$path).success(function (data){
         $scope.review = data; 
         $scope.movieId = data.movieId;   
         $scope.$parent.showLoading = false;
         $scope.$parent.showWrapper = false;
       });
+      $scope.canceler = $q.defer();
       $scope.cancel = function() {
         $scope.canceler.resolve("user cancelled");
         $scope.$parent.showLoading = false;
