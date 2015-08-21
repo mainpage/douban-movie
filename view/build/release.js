@@ -23760,11 +23760,11 @@ app.directive('loadmore', ['$http', '$location', function ($http, $location){
       var count = 0;
       var preScroll = 0;
       window.addEventListener('scroll', function (){
-        if(window.location.hash.indexOf('/top100') > -1 && document.body.offsetHeight - window.screen.height - document.body.scrollTop <= 200 && isLoadingMore == false && document.body.scrollTop > preScroll){
+        var hashReg = /^|#\/(top100)?$/;
+        if(hashReg.test(window.location.hash) == true && document.body.offsetHeight - window.screen.height - document.body.scrollTop <= 200 && isLoadingMore == false && document.body.scrollTop > preScroll){
           isLoadingMore = true;
           scope.$parent.showLoading = true;
-          console.log('start='+scope.start);
-          $http.get($location.$$path + '/' + (scope.start + 10)).success(function (data){
+          $http.get('/top100/' + (scope.start + 10)).success(function (data){
             scope.$parent.showLoading = false;
             isLoadingMore = false;
             if(data.length == 0){
