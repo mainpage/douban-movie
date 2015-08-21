@@ -53,6 +53,7 @@ app.controller('movieListCtrl', ['$scope', '$http','$location', function($scope,
         if(data == 'hot'){
           $scope.pageInfo.name = 'hot';
           $http.get('/movies').success(function (data){
+            $scope.hasLoad = true; 
             if(data.length == 0){
               console.log('no data');
             }else{
@@ -68,6 +69,7 @@ app.controller('movieListCtrl', ['$scope', '$http','$location', function($scope,
           $scope.start = 0;
           console.log('showLoading='+$scope.$parent.showLoading);
           $http.get('/top100/'+ $scope.start).success(function (data){
+            $scope.hasLoad = true; 
             if(data.length == 0){
               console.log('no data');
             }else{
@@ -85,7 +87,6 @@ app.controller('movieListCtrl', ['$scope', '$http','$location', function($scope,
         }else{
           $scope.pageInfo.name = 'top100';
         }
-        $scope.hasLoad = false;
       }
     }else{
       $scope.show = false;
@@ -110,6 +111,7 @@ app.controller('movieDetailCtrl', ['$scope', '$http', '$location', '$q', functio
         $scope.$parent.showWrapper = true; 
         $scope.hasLoadReview = false;
         $http.get($location.$$path).success(function (data){
+          $scope.hasLoad = true; 
           $scope.movie = data; 
           $scope.$parent.showLoading = false;
           $scope.$parent.showWrapper = false;
@@ -126,7 +128,6 @@ app.controller('movieDetailCtrl', ['$scope', '$http', '$location', '$q', functio
         });*/
       }else{
         $scope.show = 'stay-show';
-        $scope.hasLoad = false;
       }
     }else{
       if($scope.hasLoad == true){
@@ -223,7 +224,6 @@ app.directive('movieitem', ['$location', function($location){
     link: function (scope, element, attrs){
       element.bind('click', function (){
         console.log(scope.movie);
-        scope.$parent.hasLoad = true; //不明白为什么controller的scope是directive的parent，按文档说法应该是同一个作用域   应该是ng-repeat创建了新的作用域
         scope.$parent.scrollTop = document.body.scrollTop;  //保存scrollTop值，用于返回时定位
         element.addClass('item-active');
         document.querySelector('.movie-detail .arrow-left').setAttribute('backurl', window.location.hash);
@@ -372,7 +372,6 @@ app.directive('reviewitem', function (){
     restrict: 'A',
     link: function (scope, element, attrs){
       element.bind('click', function (){
-        scope.$parent.hasLoad = true; 
         scope.$parent.scrollTop = document.body.scrollTop;  //保存scrollTop值，用于返回时定位
         element.addClass('review-item-active');
         setTimeout(function(){
