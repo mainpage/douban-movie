@@ -195,8 +195,9 @@ app.directive('loadmore', ['$http', '$location', function ($http, $location){
       var count = 0;
       var preScroll = 0;
       window.addEventListener('scroll', function (){
-        var hashReg = /^|#\/(top100)?$/;
-        if(hashReg.test(window.location.hash) == true && document.body.offsetHeight - window.screen.height - document.body.scrollTop <= 200 && isLoadingMore == false && document.body.scrollTop > preScroll){
+        var hash = window.location.hash,
+            hashReg = /^#\/(top100)?$/;
+        if((hash == '' || hashReg.test(hash) == true) && document.body.offsetHeight - window.screen.height - document.body.scrollTop <= 200 && isLoadingMore == false && document.body.scrollTop > preScroll){
           isLoadingMore = true;
           scope.$parent.showLoading = true;
           $http.get('/top100/' + (scope.start + 10)).success(function (data){
@@ -224,6 +225,7 @@ app.directive('movieitem', ['$location', function($location){
       element.bind('click', function (){
         console.log(scope.movie);
         scope.$parent.hasLoad = true; //不明白为什么controller的scope是directive的parent，按文档说法应该是同一个作用域   应该是ng-repeat创建了新的作用域
+        scope.$digest();
         scope.$parent.scrollTop = document.body.scrollTop;  //保存scrollTop值，用于返回时定位
         element.addClass('item-active');
         document.querySelector('.movie-detail .arrow-left').setAttribute('backurl', window.location.hash);
