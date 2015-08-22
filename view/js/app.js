@@ -10,6 +10,7 @@ app.service('myRouter', ['$rootScope', '$location', function ($rootScope){  //�
     route: function() {
       var pageInfo;
       $rootScope.$on('$locationChangeStart', function (event, next, current) {
+        console.log(next);
         if(next.indexOf('/movie') > -1){
           pageInfo = "movieDetail";
         }else if(next.indexOf('/review') > -1){
@@ -225,10 +226,10 @@ app.directive('movieitem', ['$location', function($location){
       element.bind('click', function (){
         console.log(scope.movie);
         scope.$parent.hasLoad = true; //不明白为什么controller的scope是directive的parent，按文档说法应该是同一个作用域   应该是ng-repeat创建了新的作用域
-        scope.$digest();
         scope.$parent.scrollTop = document.body.scrollTop;  //保存scrollTop值，用于返回时定位
         element.addClass('item-active');
-        document.querySelector('.movie-detail .arrow-left').setAttribute('backurl', window.location.hash);
+        var backurl = window.location.hash == '' ? '#/top100' : window.location.hash;
+        document.querySelector('.movie-detail .arrow-left').setAttribute('backurl', backurl);
         setTimeout(function(){
           element.removeClass('item-active');
           document.body.scrollTop = 0;
